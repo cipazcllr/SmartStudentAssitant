@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil Mahasiswa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+                  url('f_p.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .profile-wrapper {
+      background: white;
+      width: 100%;
+      max-width: 850px;
+      display: flex;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      flex-wrap: wrap;
+    }
+
+    .profile-left {
+      background: #f1f9ff;
+      flex: 1;
+      min-width: 280px;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .profile-left img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #1976d2;
+      margin-bottom: 15px;
+    }
+
+    .profile-left h2 {
+      color: #1976d2;
+      margin-bottom: 5px;
+    }
+
+    .profile-left .email {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .profile-right {
+      flex: 2;
+      padding: 30px 40px;
+      background: #fff;
+    }
+
+    .info-box {
+      background: #f9f9f9;
+      padding: 14px 20px;
+      border-left: 4px solid #1976d2;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .info-box input {
+      width: 100%;
+      font-size: 14px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .edit-button {
+      background-color: #1976d2;
+      color: white;
+    }
+
+    .edit-button:hover {
+      background-color: #125aa3;
+    }
+
+    .save-button {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .save-button:hover {
+      background-color: #388e3c;
+    }
+
+    .back-button {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .back-button:hover {
+      background-color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .profile-wrapper {
+        flex-direction: column;
+      }
+
+      .profile-right {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="profile-wrapper">
+  <div class="profile-left">
+    <img src="Screenshot_11_result.jpg" alt="Foto Mahasiswa">
+    <h2 id="displayNama">Nama</h2>
+    <div class="email" id="displayEmail">email@example.com</div>
+  </div>
+
+  <div class="profile-right">
+    <div class="section-title">🧾 Biodata Diri</div>
+
+    <div class="info-box">📍 Alamat:
+      <div id="displayAlamat"></div>
+      <input type="text" id="inputAlamat" style="display:none;">
+    </div>
+
+    <div class="info-box">🎓 Program Studi:
+      <div id="displayProdi"></div>
+      <input type="text" id="inputProdi" style="display:none;">
+    </div>
+
+    <div class="info-box">🆔 NIM:
+      <div id="displayNim"></div>
+      <input type="text" id="inputNim" style="display:none;">
+    </div>
+
+    <div class="section-title">💡 Aktivitas & Minat</div>
+
+    <div class="info-box">🎨 Hobi:
+      <div id="displayHobi"></div>
+      <input type="text" id="inputHobi" style="display:none;">
+    </div>
+
+    <div class="info-box">💬 Motto:
+      <div id="displayMotto"></div>
+      <input type="text" id="inputMotto" style="display:none;">
+    </div>
+
+    <div class="button-group">
+      <button class="button edit-button" onclick="toggleEdit(true)">✏️ Edit Profil</button>
+      <button class="button save-button" onclick="simpanProfil()" style="display:none;" id="btnSimpan">💾 Simpan</button>
+      <a href="dashboard.html"><button class="button back-button">⬅ Kembali</button></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const defaultData = {
+    nama: "Yaya Yaya",
+    email: "yaya@example.com",
+    alamat: "Medan, Sumatera Utara",
+    prodi: "Teknik Informatika",
+    nim: "41523010063",
+    hobi: "Menulis, Desain UI",
+    motto: "Berpikir kreatif, bertindak solutif"
+  };
+
+  function loadProfil() {
+    const data = JSON.parse(localStorage.getItem("profilMahasiswa")) || defaultData;
+
+    document.getElementById("displayNama").innerText = data.nama;
+    document.getElementById("displayEmail").innerText = data.email;
+    document.getElementById("displayAlamat").innerText = data.alamat;
+    document.getElementById("displayProdi").innerText = data.prodi;
+    document.getElementById("displayNim").innerText = data.nim;
+    document.getElementById("displayHobi").innerText = data.hobi;
+    document.getElementById("displayMotto").innerText = data.motto;
+
+    document.getElementById("inputAlamat").value = data.alamat;
+    document.getElementById("inputProdi").value = data.prodi;
+    document.getElementById("inputNim").value = data.nim;
+    document.getElementById("inputHobi").value = data.hobi;
+    document.getElementById("inputMotto").value = data.motto;
+  }
+
+  function toggleEdit(editing) {
+    const fields = ["Alamat", "Prodi", "Nim", "Hobi", "Motto"];
+    fields.forEach(field => {
+      document.getElementById(`display${field}`).style.display = editing ? "none" : "block";
+      document.getElementById(`input${field}`).style.display = editing ? "block" : "none";
+    });
+
+    document.querySelector(".edit-button").style.display = editing ? "none" : "inline-block";
+    document.getElementById("btnSimpan").style.display = editing ? "inline-block" : "none";
+  }
+
+  function simpanProfil() {
+    const data = {
+      nama: document.getElementById("displayNama").innerText,
+      email: document.getElementById("displayEmail").innerText,
+      alamat: document.getElementById("inputAlamat").value,
+      prodi: document.getElementById("inputProdi").value,
+      nim: document.getElementById("inputNim").value,
+      hobi: document.getElementById("inputHobi").value,
+      motto: document.getElementById("inputMotto").value,
+    };
+
+    localStorage.setItem("profilMahasiswa", JSON.stringify(data));
+    toggleEdit(false);
+    loadProfil();
+  }
+
+  loadProfil();
+</script>
+
+</body>
+</html>

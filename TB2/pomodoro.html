@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pomodoro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.4)),
+                  url('dh.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      padding: 30px;
+      color: #333;
+    }
+
+    h1 {
+      color: #1976d2;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .left, .right {
+      flex: 1 1 400px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .left {
+      max-width: 480px;
+    }
+
+    #timer {
+      font-size: 64px;
+      margin: 20px 0;
+      color: #d32f2f;
+    }
+
+    .buttons {
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 10px 5px;
+      border: none;
+      background: #1976d2;
+      color: white;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0d47a1;
+    }
+
+    .materi-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1976d2;
+      cursor: pointer;
+    }
+
+    .materi-box {
+      background: #f9f9f9;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .materi-box:hover {
+      background: #e3f2fd;
+    }
+
+    .materi-desc {
+      margin-top: 10px;
+      display: none;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .materi-box.active .materi-desc {
+      display: block;
+    }
+
+    .button-link {
+      display: inline-block;
+      padding: 8px 14px;
+      background-color: #1976d2;
+      color: white !important;
+      text-decoration: none;
+      border-radius: 8px;
+      margin: 5px 8px 0 0;
+      transition: background-color 0.3s ease;
+      font-size: 14px;
+    }
+
+    .button-link:hover {
+      background-color: #0d47a1;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 Pomodoro & Tips Belajar</h1>
+
+  <div class="container">
+    <!-- KIRI -->
+    <div class="left">
+      <h2>⏱ Pomodoro Timer</h2>
+      <div id="timer">25:00</div>
+      <div class="buttons">
+        <button onclick="startPomodoro()">Mulai</button>
+        <button onclick="resetPomodoro()">Reset</button>
+      </div>
+
+      <h3>📌 Apa itu Teknik Pomodoro?</h3>
+      <p>
+        Teknik Pomodoro adalah metode manajemen waktu dengan membagi waktu belajar menjadi 25 menit fokus (1 pomodoro) diikuti 5 menit istirahat.
+      </p>
+
+      <h3>🎯 Tujuan Teknik Pomodoro</h3>
+      <ul>
+        <li>Meningkatkan fokus dan efisiensi belajar</li>
+        <li>Menghindari kelelahan mental</li>
+        <li>Melatih kebiasaan belajar terstruktur</li>
+      </ul>
+
+      <h3>✅ Manfaat</h3>
+      <ul>
+        <li>Lebih produktif</li>
+        <li>Mengurangi distraksi</li>
+        <li>Belajar terasa ringan</li>
+      </ul>
+
+      <h3>🛠️ Cara Penggunaan</h3>
+      <ol>
+        <li>Tentukan tugas yang ingin dikerjakan</li>
+        <li>Setel timer selama 25 menit dan kerjakan</li>
+        <li>Ambil istirahat 5 menit saat selesai</li>
+        <li>Setiap 4 pomodoro, ambil istirahat lebih lama (15–30 menit)</li>
+      </ol>
+    </div>
+
+    <!-- KANAN -->
+    <div class="right">
+      <h2>📚 Materi & Tips Belajar Efektif</h2>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">🔁 Spaced Repetition</div>
+        <div class="materi-desc">
+          Teknik pengulangan terjadwal untuk daya ingat jangka panjang.
+          <br>
+          <a class="button-link" href="https://youtu.be/Z-zNHHpXoMM" target="_blank">🎥 Video</a>
+          <a class="button-link" href="https://www.supermemo.com/en/archives1990-2015/english/ol/sm2" target="_blank">📄 Artikel</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">🧠 Teknik Feynman</div>
+        <div class="materi-desc">
+          Belajar dengan menjelaskan ulang materi seolah mengajar.
+          <br>
+          <a class="button-link" href="https://youtu.be/_f-qkGJBPts" target="_blank">🎥 Video</a>
+          <a class="button-link" href="https://fs.blog/feynman-learning-technique/" target="_blank">📄 Artikel</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">📋 Active Recall</div>
+        <div class="materi-desc">
+          Teknik mengingat tanpa melihat catatan.
+          <br>
+          <a class="button-link" href="https://youtu.be/ukLnPbIffxE" target="_blank">🎥 Video</a>
+          <a class="button-link" href="https://www.researchgate.net/publication/322390850" target="_blank">📄 Penelitian</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">⏳ Hindari Prokrastinasi</div>
+        <div class="materi-desc">
+          Cara menghindari kebiasaan menunda-nunda.
+          <br>
+          <a class="button-link" href="https://youtu.be/ArM5-M5I2gI" target="_blank">🎥 Video</a>
+          <a class="button-link" href="https://www.apa.org/topics/procrastination" target="_blank">📄 Artikel</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">📖 10 Kebiasaan Belajar Efektif</div>
+        <div class="materi-desc">
+          Panduan belajar efisien dan terstruktur.
+          <br>
+          <a class="button-link" href="https://www.educationcorner.com/effective-study-habits.html" target="_blank">📄 Artikel</a>
+          <a class="button-link" href="https://youtu.be/sDsuWkF9B1s" target="_blank">🎥 Video</a>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 30px; color: #1976d2;">🎮 Game Penghilang Jenuh</h2>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">🧠 2048 Puzzle</div>
+        <div class="materi-desc">
+          Gabungkan angka hingga 2048.
+          <br><a class="button-link" href="https://play2048.co/" target="_blank">▶️ Mainkan</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">🧩 Jigsaw Puzzle</div>
+        <div class="materi-desc">
+          Susun gambar secara acak.
+          <br><a class="button-link" href="https://www.jigsawplanet.com/" target="_blank">▶️ Mainkan</a>
+        </div>
+      </div>
+
+      <div class="materi-box" onclick="toggleBox(this)">
+        <div class="materi-title">🎯 Flappy Bird</div>
+        <div class="materi-desc">
+          Game sederhana untuk istirahat sejenak.
+          <br><a class="button-link" href="https://flappybird.io/" target="_blank">▶️ Mainkan</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- Tombol kembali -->
+  <div style="text-align: center; margin-bottom: 20px;">
+    <a href="dashboard.html" class="button-link" style="background-color: #4caf50;">
+      ⬅️ Kembali ke Dashboard
+    </a>
+  </div>
+  <script>
+    let timer;
+    let isRunning = false;
+    let timeLeft = 25 * 60;
+
+    function updateDisplay() {
+      const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      const seconds = (timeLeft % 60).toString().padStart(2, '0');
+      document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+    }
+
+    function startPomodoro() {
+      if (isRunning) return;
+      isRunning = true;
+      timer = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          updateDisplay();
+        } else {
+          clearInterval(timer);
+          isRunning = false;
+          showNotification("⏰ Waktu Pomodoro selesai! Saatnya istirahat.");
+        }
+      }, 1000);
+    }
+
+    function resetPomodoro() {
+      clearInterval(timer);
+      isRunning = false;
+      timeLeft = 25 * 60;
+      updateDisplay();
+    }
+
+    function toggleBox(box) {
+      box.classList.toggle("active");
+    }
+
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    function showNotification(msg) {
+      if (Notification.permission === "granted") {
+        new Notification("Pomodoro", { body: msg });
+      } else {
+        alert(msg);
+      }
+    }
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>

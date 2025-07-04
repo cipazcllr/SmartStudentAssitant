@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Planner Kuliah</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(270deg, #add8e6, #ffc0cb, #ffe5b4);
+      background-size: 600% 600%;
+      animation: gradientShift 10s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: black;
+      margin-bottom: 10px;
+    }
+
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    input {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="brand-title"><strong>Smart Student Assistant</strong></div>
+    <img src="profil.jpeg" alt="Gambar Profil" class="profile-img">
+    <h2>Login Mahasiswa</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p>Belum punya akun? <a href="daftar_disini.html">Daftar di sini</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      fetch("login.php", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => response.text())
+        .then(result => {
+          if (result.trim() === "success") {
+            window.location.href = "dashboard.html";
+          } else {
+            alert("Email atau password salah!");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    });
+  </script>
+</body>
+
+</html>

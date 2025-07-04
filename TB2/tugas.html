@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catatan Tugas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
+                  url('dh.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px;
+      background-color: transparent;
+      text-align: center;
+    }
+
+    header h1 {
+      color: #6a1b9a;
+      font-size: 32px;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .tugas-container {
+      width: 100%;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      min-height: 100%;
+    }
+
+    .task-card {
+      background: #f8f5ff;
+      border-left: 5px solid #8e24aa;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .task-card:hover {
+      transform: scale(1.01);
+    }
+
+    .task-details h3 {
+      margin-bottom: 8px;
+      color: #4a0072;
+      font-size: 20px;
+    }
+
+    .task-details p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .delete-btn {
+      background-color: #ef5350;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background-color: #c62828;
+    }
+
+    .back-btn {
+      margin: 20px auto;
+      padding: 14px 28px;
+      background: #6a1b9a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      text-decoration: none;
+      display: block;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      transition: background-color 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #4a0072;
+    }
+
+    @media screen and (max-width: 768px) {
+      .task-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .delete-btn {
+        align-self: flex-end;
+        margin-top: 10px;
+      }
+
+      .tugas-container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📋 Daftar Tugas</h1>
+  </header>
+
+  <main>
+    <div class="tugas-container" id="task-list">
+      <!-- Diisi via JS -->
+    </div>
+  </main>
+
+  <a href="dashboard.html" class="back-btn">⬅ Kembali ke Dashboard</a>
+
+  <script>
+    function loadTugas() {
+      const taskList = document.getElementById('task-list');
+      const dataJadwal = JSON.parse(localStorage.getItem('dataJadwal')) || [];
+      const tugasList = dataJadwal
+        .map((item, index) => ({ ...item, index }))
+        .filter(item => item.kategori === 'tugas');
+
+      if (tugasList.length === 0) {
+        taskList.innerHTML = '<p style="text-align:center;">📭 Tidak ada tugas yang tersedia.</p>';
+        return;
+      }
+
+      tugasList.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.innerHTML = `
+          <div class="task-details">
+            <h3>${item.judul}</h3>
+            <p><strong>📅 Tanggal:</strong> ${item.tanggal}</p>
+            <p><strong>⏰ Waktu:</strong> ${item.waktu}</p>
+            <p><strong>🗒️ Deskripsi:</strong> ${item.deskripsi}</p>
+          </div>
+          <button class="delete-btn" onclick="hapusTugas(${item.index})">❌ Hapus</button>
+        `;
+        taskList.appendChild(card);
+      });
+    }
+
+    function hapusTugas(index) {
+      let data = JSON.parse(localStorage.getItem('dataJadwal')) || [];
+      if (index >= 0 && index < data.length) {
+        if (confirm("Apakah kamu yakin ingin menghapus tugas ini?")) {
+          data.splice(index, 1);
+          localStorage.setItem('dataJadwal', JSON.stringify(data));
+          loadTugas();
+        }
+      }
+    }
+
+    window.onload = loadTugas;
+  </script>
+
+</body>
+</html>
